@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+    <h1 class="h2">Dashboard Overview</h1>
+    <a href="/clients/new" class="btn btn-primary">
+        + Add New Client
+    </a>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Total Clients</h5>
+                <p class="card-text display-4"><%= data.clientCount %></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Active Policies</h5>
+                <p class="card-text display-4"><%= data.policyCount %></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Renewals (Next 30 Days)</h5>
+                <p class="card-text display-4"><%= data.expiringCount %></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h3 class="mb-0">🚨 Recent Activity & Reminders</h3>
+    </div>
+    <div class="card-body">
+        <% if (data.reminders.length > 0) { %>
+            <ul class="list-group list-group-flush">
+                <% data.reminders.forEach(reminder => { %>
+                    <li class="list-group-item">
+                        <%= reminder.message %>
+                        <br>
+                        <small class="text-muted">
+                            Generated on: <%= new Date(reminder.createdAt).toLocaleString() %>
+                        </small>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p class="text-muted">No recent activity. The reminder task will run automatically when policies are nearing expiration.</p>
+        <% } %>
+    </div>
+</div>

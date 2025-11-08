@@ -1,0 +1,131 @@
+
+
+<% if (data.client) { %>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0"><%= data.client.name %></h2>
+            <div>
+                <a href="/clients/edit/<%= data.client.id %>" class="btn btn-secondary">Edit</a>
+                <form action="/clients/delete/<%= data.client.id %>" method="POST" onsubmit="return confirm('Are you sure?');" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> <%= data.client.email %></p>
+            <p><strong>Phone:</strong> <%= data.client.phone || 'N/A' %></p>
+            <p class="text-muted">Client since: <%= new Date(data.client.createdAt).toLocaleDateString() %></p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><h3 class="mb-0">Policies</h3></div>
+        <div class="card-body">
+            <% if (data.policies.length > 0) { %>
+                <ul class="list-group">
+                    <% data.policies.forEach(policy => { %>
+                        <li class="list-group-item">
+                            <strong>Policy #<%= policy.policyNumber %></strong> (<%= policy.insurer %> - <%= policy.policyType %>)
+                            <br>
+                            <small class="text-muted">Expires on: <%= new Date(policy.expiryDate).toLocaleDateString() %></small>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p class="text-muted">No policies have been added for this client yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><h3 class="mb-0">Notes</h3></div>
+        <div class="card-body">
+            <form action="/clients/<%= data.client.id %>/notes/add" method="POST" class="mb-3">
+                <div class="mb-2">
+                    <textarea class="form-control" name="content" id="note-content" rows="3" placeholder="Add a note..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Save Note</button>
+                <button type="button" class="btn btn-info" id="record-note-btn">🎤 Record Note</button>
+            </form>
+            <hr>
+            <% if (data.notes.length > 0) { %>
+                <ul class="list-group list-group-flush">
+                    <% data.notes.forEach(note => { %>
+                        <li class="list-group-item">
+                            <p><%= note.content %></p>
+                            <small class="text-muted"><%= new Date(note.createdAt).toLocaleString() %></small>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p class="text-muted">No notes for this client yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header"><h3 class="mb-0">📄 Documents</h3></div>
+        <div class="card-body">
+            <form action="/clients/<%= data.client.id %>/documents/upload" method="POST" enctype="multipart/form-data" class="mb-3 p-3 border rounded bg-light">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="document" class="form-label">Upload File</label>
+                        <input class="form-control" type="file" name="document" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="description" class="form-label">Description / Tag</label>
+                        <input type="text" class="form-control" name="description" placeholder="e.g., Signed Policy Form" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Document</button>
+            </form>
+            <hr>
+            <% if (data.documents.length > 0) { %>
+                <ul class="list-group">
+                    <% data.documents.forEach(doc => { %>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong><%= doc.description %></strong><br>
+                                <small class="text-muted"><%= doc.originalName %> - Uploaded <%= new Date(doc.uploadedAt).toLocaleDateString() %></small>
+                            </div>
+                            <a href="/<%= doc.filePath %>" class="btn btn-sm btn-outline-success" download>Download</a>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p class="text-muted">No documents uploaded for this client.</p>
+            <% } %>
+        </div>
+    </div>
+
+
+
+    <div class="card shadow-sm">
+        <div class="card-header"><h3 class="mb-0">Add New Policy</h3></div>
+        <div class="card-body">
+            <form action="/clients/<%= data.client.id %>/policies/add" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="policyNumber" class="form-label">Policy Number</label>
+                        <input type="text" class="form-control" name="policyNumber" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="insurer" class="form-label">Insurance Company</label>
+                        <input type="text" class="form-control" name="insurer" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="policyType" class="form-label">Policy Type (e.g., Auto, Health)</label>
+                        <input type="text" class="form-control" name="policyType">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expiryDate" class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control" name="expiryDate" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Policy</button>
+            </form>
+        </div>
+    </div>
+<% } %>
+

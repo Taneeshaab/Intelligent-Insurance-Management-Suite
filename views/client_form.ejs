@@ -1,0 +1,27 @@
+
+
+<% 
+    const client = data.client;
+    const isEditing = client && client.id;
+    const formAction = isEditing ? `/clients/update/${client.id}` : '/clients/add';
+%>
+
+<h1 class="mb-4"><%= title %></h1>
+
+<form action="<%= formAction %>" method="POST">
+    <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="name" name="name" required value="<%= isEditing ? client.name : '' %>">
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" required value="<%= isEditing ? client.email : '' %>">
+    </div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="phone" name="phone" value="<%= isEditing && client.phone ? client.phone : '' %>">
+    </div>
+    <button type="submit" class="btn btn-primary"><%= isEditing ? 'Update Client' : 'Save Client' %></button>
+    <a href="<%= isEditing ? `/clients/${client.id}` : '/clients' %>" class="btn btn-secondary">Cancel</a>
+</form>
+

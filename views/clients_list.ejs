@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+    <h1 class="h2">Manage Clients</h1>
+    <a href="/clients/new" class="btn btn-primary">+ Add New Client</a>
+</div>
+
+<% if (data.clients.length === 0) { %>
+    <div class="alert alert-info">
+        You haven't added any clients yet. <a href="/clients/new" class="alert-link">Add one now!</a>
+    </div>
+<% } else { %>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col" class="text-center">Policies</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% data.clients.forEach(client => { %>
+                            <tr>
+                                <td class="align-middle"><%= client.name %></td>
+                                <td class="align-middle"><%= client.email %></td>
+                                <td class="align-middle"><%= client.phone || 'N/A' %></td>
+                                <td class="align-middle text-center">
+                                    <span class="badge bg-primary rounded-pill fs-6">
+                                        <%= client.policyCount %>
+                                    </span>
+                                </td>
+                                <td class="align-middle">
+                                    <a href="/clients/<%= client.id %>" class="btn btn-sm btn-outline-secondary">View Details</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<% } %>
