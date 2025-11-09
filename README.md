@@ -1,4 +1,4 @@
-# IntelliQuote: Insurance Quoting Application 🤖 
+# Intelligent Insurance Management Suite 🤖 
 
 ## 📌 Project Overview
 
